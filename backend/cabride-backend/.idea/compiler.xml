@@ -7,6 +7,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
       </profile>
+      <profile name="Annotation profile for driver-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
+        </processorPath>
+        <module name="driver-service" />
+      </profile>
       <profile name="Annotation profile for CabRide Backend" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -29,6 +38,7 @@
       <module name="auth-service" options="-parameters" />
       <module name="com.cabride" options="-parameters" />
       <module name="common-lib" options="-parameters" />
+      <module name="driver-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>

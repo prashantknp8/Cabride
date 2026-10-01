@@ -6,6 +6,8 @@ import auth_service.dto.LoginRequest;
 import auth_service.dto.RegisterRequest;
 import auth_service.dto.response.UserResponse;
 import auth_service.entity.User;
+import auth_service.event.UserCreatedEvent;
+import auth_service.event.UserEventPublisher;
 import auth_service.exception.InvalidCredentialsException;
 import auth_service.exception.ResourceAlreadyExistsException;
 import auth_service.mapper.UserMapper;
@@ -22,6 +24,8 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+
+    private final UserEventPublisher userEventPublisher;
 
     @Override
     public UserResponse register(RegisterRequest request) {
@@ -42,6 +46,15 @@ public class AuthServiceImpl implements AuthService {
         user.setFailedAttempts(0);
 
         User savedUser=userRepository.save(user);
+
+        UserCreatedEvent event=UserCreatedEvent.builder()
+                .userId(savedUser.getId())
+                .firstName(savedUser.getFirstName())
+                .lastName(savedUser.getLastName())
+                .phoneNumber(savedUser.getPhoneNumber())
+                .build();
+
+        userEventPublisher.publishedUserCreated(event);
 
         return UserResponse.builder()
                 .id(savedUser.getId())
