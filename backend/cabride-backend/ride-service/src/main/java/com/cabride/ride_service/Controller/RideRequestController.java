@@ -1,4 +1,4 @@
 package com.cabride.ride_service.Controller;
 
-public class RideController {
+public class RideRequestController {
 }
