@@ -15,4 +15,5 @@ public class DriverResponse {
     private DriverStatus status;
     private Double rating;
     private Integer totalRides;
+    private Integer vehicleCapacity;
 }

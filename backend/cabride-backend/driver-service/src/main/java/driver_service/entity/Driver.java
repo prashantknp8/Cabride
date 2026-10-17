@@ -30,6 +30,9 @@ public class Driver {
     @Column(name = "license_number",nullable = false,unique = true)
     private String licenseNumber;
 
+    @Column(name = "vehicle_capacity", nullable = false)
+    private Integer vehicleCapacity;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private DriverStatus status=DriverStatus.OFFLINE;

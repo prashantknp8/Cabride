@@ -1,4 +1,9 @@
 package com.cabride.ride_service.Enums;
 
-public class RideStatus {
+public enum RideStatus {
+    REQUESTED,
+    ACCEPTED,
+    IN_PROGRESS,
+    COMPLETED,
+    CANCELLED
 }

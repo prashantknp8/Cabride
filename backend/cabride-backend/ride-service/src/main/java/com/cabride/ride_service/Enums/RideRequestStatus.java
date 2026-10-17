@@ -1,4 +1,11 @@
 package com.cabride.ride_service.Enums;
 
-public class RideRequestStatus {
+public enum RideRequestStatus {
+    REQUESTED,
+    DRIVER_ACCEPTED,
+    PASSENGER_CONFIRMED,
+    MATCHED,
+    REJECTED,
+    CANCELLED,
+    EXPIRED
 }

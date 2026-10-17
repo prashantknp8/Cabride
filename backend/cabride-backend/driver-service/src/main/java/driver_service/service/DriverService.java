@@ -10,7 +10,7 @@ public interface DriverService {
     DriverResponse registerDriver(UUID userId, CreateDriverRequest request);
 
     DriverResponse getMyDriverProfile(UUID userId);
-
+    DriverResponse getDriverById(UUID driverId);
     DriverResponse updateStatus(
             UUID userId,
             UpdateDriverStatusRequest request

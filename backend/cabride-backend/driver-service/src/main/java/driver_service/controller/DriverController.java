@@ -39,6 +39,14 @@ public class DriverController {
         return ResponseEntity.ok(driverService.getMyDriverProfile(userId));
     }
 
+
+    @GetMapping("/{driverId}")
+    public ResponseEntity<DriverResponse> getDriverById(
+            @PathVariable UUID driverId) {
+        return ResponseEntity.ok(driverService.getDriverById(driverId));
+    }
+
+
     @PatchMapping("/me/status")
     public ResponseEntity<DriverResponse> updateStatus(
             @Valid @RequestBody UpdateDriverStatusRequest request) {

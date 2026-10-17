@@ -40,6 +40,7 @@ public class DriverServiceImpl implements DriverService {
         Driver driver = new Driver();
         driver.setUserId(userId);
         driver.setLicenseNumber(request.getLicenseNumber());
+        driver.setVehicleCapacity(request.getVehicleCapacity());
 
         // default values are already defined
 
@@ -56,6 +57,18 @@ public class DriverServiceImpl implements DriverService {
 
         return mapToResponse(driver);
     }
+
+
+    @Override
+    public DriverResponse getDriverById(UUID driverId) {
+        Driver driver = driverRepository.findById(driverId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Driver profile not found"
+                ));
+
+        return mapToResponse(driver);
+    }
+
 
     @Override
     public DriverResponse updateStatus(
@@ -115,6 +128,7 @@ public class DriverServiceImpl implements DriverService {
                 .id(driver.getId())
                 .userId(driver.getUserId())
                 .licenseNumber(driver.getLicenseNumber())
+                .vehicleCapacity(driver.getVehicleCapacity())
                 .status(driver.getStatus())
                 .rating(driver.getRating())
                 .totalRides(driver.getTotalRides())

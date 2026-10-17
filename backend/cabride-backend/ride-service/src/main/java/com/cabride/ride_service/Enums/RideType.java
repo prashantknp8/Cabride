@@ -1,4 +1,6 @@
 package com.cabride.ride_service.Enums;
 
-public class RideType {
+public enum RideType {
+    SOLO,
+    SHARED
 }
