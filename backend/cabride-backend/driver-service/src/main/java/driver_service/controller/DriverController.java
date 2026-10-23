@@ -65,4 +65,39 @@ public class DriverController {
                 .getPrincipal();
     }
 
+    @PostMapping("/{driverId}/reserve")
+    public ResponseEntity<DriverResponse> reserveDriver(
+            @PathVariable UUID driverId
+    ){
+        return ResponseEntity.ok(driverService.reserveDriver(driverId));
+    }
+
+    @PostMapping("/{driverId}/release")
+    public ResponseEntity<DriverResponse> releaseDriver(
+            @PathVariable UUID driverId
+    ){
+        return ResponseEntity.ok(driverService.releaseDriver(driverId));
+    }
+
+    @PostMapping("/{driverId}/start-trip")
+    public ResponseEntity<DriverResponse> startTrip(
+            @PathVariable UUID driverId) {
+
+
+        DriverResponse response = driverService.startTrip(driverId);
+
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{driverId}/complete-trip")
+    public ResponseEntity<DriverResponse> completeTrip(
+            @PathVariable UUID driverId
+    ){
+        return ResponseEntity.ok(driverService.completeTrip(driverId));
+    }
+
+
+
+
 }

@@ -6,6 +6,7 @@ import com.cabride.ride_service.Dto.Response.RideRequestResponse;
 import com.cabride.ride_service.Service.RideRequestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/ride-requests")
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class RideRequestController {
             @Valid @RequestBody CreateRideRequest request,
             Authentication authentication
     ) {
+
         UUID passengerId = UUID.fromString(
                 authentication.getName()
         );
@@ -69,7 +72,7 @@ public class RideRequestController {
             @PathVariable UUID requestId,
             @RequestHeader("Authorization") String authorization
     ) {
-        System.out.println(">>> CONFIRM ENDPOINT REACHED");
+        log.info(">>> CONFIRM ENDPOINT REACHED");
         UUID passengerId = UUID.fromString(SecurityContextHolder.getContext().getAuthentication().getName());
         String token = authorization.substring(7);
 

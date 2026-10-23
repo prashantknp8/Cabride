@@ -15,4 +15,10 @@ public interface DriverService {
             UUID userId,
             UpdateDriverStatusRequest request
     );
+    DriverResponse startTrip(UUID driverId);
+
+    DriverResponse reserveDriver(UUID driverId);
+
+    DriverResponse releaseDriver(UUID driverId);
+    DriverResponse completeTrip(UUID driverId);
 }

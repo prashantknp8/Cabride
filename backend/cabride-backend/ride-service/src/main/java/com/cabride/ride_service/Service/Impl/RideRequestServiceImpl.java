@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -70,16 +71,10 @@ public class RideRequestServiceImpl implements RideRequestService {
     }
 
 
+
     @Override
+    @Transactional
     public RideRequestResponse acceptRequest(UUID requestId, String token) {
-        DriverResponse driver = driverClient.getMyDriverProfile(token);
-
-        if (!"AVAILABLE".equals(driver.getStatus())) {
-            throw new IllegalStateException(
-                    "Driver must be available to accept a ride request"
-            );
-        }
-
         RideRequest rideRequest = rideRequestRepository
                 .findByIdAndStatus(
                         requestId,
@@ -89,10 +84,22 @@ public class RideRequestServiceImpl implements RideRequestService {
                         "Ride request not found or already processed"
                 ));
 
-        rideRequest.setStatus(RideRequestStatus.DRIVER_ACCEPTED);
+        DriverResponse driver = driverClient.getMyDriverProfile(token);
+
+        if (!Objects.equals(driver.getStatus(), "AVAILABLE")) {
+            throw new IllegalStateException(
+                    "Driver must be available to accept a ride request"
+            );
+        }
+
+        // Reserve the driver before assigning the request
+        driverClient.reserveDriver(driver.getId(), token);
+
         rideRequest.setAcceptedDriverId(driver.getId());
+        rideRequest.setStatus(RideRequestStatus.DRIVER_ACCEPTED);
 
         RideRequest savedRequest = rideRequestRepository.save(rideRequest);
+
         return mapToResponse(savedRequest);
     }
 

@@ -1,4 +1,8 @@
 package com.cabride.ride_service.Service;
 
-public class RideService {
+import java.util.UUID;
+
+public interface RideService {
+    void startRide(UUID rideId, UUID driverId,String token);
+    void completeRide(UUID rideId, UUID driverId, String token);
 }

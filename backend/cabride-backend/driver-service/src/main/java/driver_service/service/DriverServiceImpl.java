@@ -12,6 +12,7 @@ import driver_service.repository.DriverRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -85,6 +86,13 @@ public class DriverServiceImpl implements DriverService {
         DriverStatus currentStatus = driver.getStatus();
         DriverStatus requestedStatus = request.getStatus();
 
+        if (requestedStatus == DriverStatus.RESERVED
+                || requestedStatus == DriverStatus.ON_TRIP) {
+            throw new InvalidStatusTransitionException(
+                    "This status is managed by the ride workflow"
+            );
+        }
+
         if (!isValidTransition(currentStatus, requestedStatus)) {
             throw new InvalidStatusTransitionException(
                     "Invalid driver status transition: "
@@ -101,6 +109,76 @@ public class DriverServiceImpl implements DriverService {
         return mapToResponse(updatedDriver);
     }
 
+    @Override
+    public DriverResponse startTrip(UUID driverId) {
+        Driver driver = driverRepository.findById(driverId)
+                .orElseThrow(()-> new ResourceNotFoundException(
+                        "Driver profile not found"
+                ));
+        if(driver.getStatus()!=DriverStatus.RESERVED){
+            throw new InvalidStatusTransitionException(
+                    "Only reserved drivers can start a trip"
+            );
+        }
+
+        driver.setStatus(DriverStatus.ON_TRIP);
+
+        return mapToResponse(driverRepository.save(driver));
+    }
+
+    @Override
+    public DriverResponse reserveDriver(UUID driverId) {
+        Driver driver=driverRepository.findById(driverId)
+                .orElseThrow(()-> new ResourceNotFoundException(
+                        "Driver profile not found"
+                ));
+
+        if(driver.getStatus()!=DriverStatus.AVAILABLE){
+            throw new InvalidStatusTransitionException(
+                    "Only available drivers can be reserved"
+            );
+        }
+        driver.setStatus(DriverStatus.RESERVED);
+
+        return mapToResponse(driverRepository.save(driver));
+    }
+
+    @Override
+    public DriverResponse releaseDriver(UUID driverId) {
+        Driver driver=driverRepository.findById(driverId)
+                .orElseThrow(()-> new ResourceNotFoundException(
+                        "Driver profile not found"
+                ));
+
+        if(driver.getStatus()!=DriverStatus.RESERVED){
+            throw new InvalidStatusTransitionException(
+                    "Only reserved drivers can be released"
+            );
+        }
+        driver.setStatus(DriverStatus.AVAILABLE);
+
+        return mapToResponse(driverRepository.save(driver));
+    }
+
+    @Override
+    @Transactional
+    public DriverResponse completeTrip(UUID driverId) {
+       Driver driver= driverRepository.findById(driverId)
+               .orElseThrow(()->new ResourceNotFoundException(
+                       "Driver not found"
+               ));
+
+       if(driver.getStatus()!=DriverStatus.ON_TRIP){
+           throw new InvalidStatusTransitionException(
+                   "Only drivers currently on a trip can complete it"
+           );
+       }
+
+       driver.setStatus(AVAILABLE);
+       Driver savedDriver= driverRepository.save(driver);
+       return mapToResponse(savedDriver);
+    }
+
     private boolean isValidTransition(
             DriverStatus current,
             DriverStatus requested) {
@@ -112,6 +190,10 @@ public class DriverServiceImpl implements DriverService {
 
             case AVAILABLE ->
                     requested == DriverStatus.OFFLINE
+                            || requested == DriverStatus.RESERVED;
+
+            case RESERVED ->
+                    requested == DriverStatus.AVAILABLE
                             || requested == DriverStatus.ON_TRIP;
 
             case ON_TRIP ->
