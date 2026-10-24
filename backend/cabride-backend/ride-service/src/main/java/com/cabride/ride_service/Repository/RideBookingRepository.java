@@ -18,4 +18,6 @@ public interface RideBookingRepository extends JpaRepository<RideBooking, UUID> 
             UUID passengerId,
             List<BookingStatus> statuses
     );
+
+    boolean existsByRideRequestId(UUID id);
 }

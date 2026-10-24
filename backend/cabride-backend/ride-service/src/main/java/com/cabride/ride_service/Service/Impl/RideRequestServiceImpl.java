@@ -121,6 +121,12 @@ public class RideRequestServiceImpl implements RideRequestService {
                         "Request not found or not awaiting confirmation"
                 ));
 
+        if(rideBookingRepository.existsByRideRequestId(request.getId())){
+            throw new IllegalStateException(
+                    "This ride request has already been confirmed"
+            );
+        }
+
         DriverResponse driver = driverClient.getDriverById(
                 request.getAcceptedDriverId(),
                 token
