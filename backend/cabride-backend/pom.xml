@@ -35,10 +35,12 @@
 
 		<!-- JWT -->
 		<jjwt.version>0.12.7</jjwt.version>
+
+		<testcontainers.version>1.21.4</testcontainers.version>
 	</properties>
 
 	<modules>
-		<module>common-lib</module>
+<!--		<module>common-lib</module>-->
 		<module>service-registry</module>
 		<module>api-gateway</module>
 		<module>auth-service</module>
@@ -56,6 +58,13 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>${testcontainers.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

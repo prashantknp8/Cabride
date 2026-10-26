@@ -2,7 +2,11 @@ package driver_service.entity;
 
 import driver_service.enums.DriverStatus;
 import jakarta.persistence.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.time.LocalDateTime;
@@ -12,6 +16,9 @@ import static java.sql.Types.CHAR;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name= "drivers",
 uniqueConstraints = {
         @UniqueConstraint(columnNames = "user_id"),
@@ -47,6 +54,7 @@ public class Driver {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
 
     @PrePersist
     protected void onCreate() {
