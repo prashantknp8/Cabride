@@ -1,4 +1,8 @@
 package com.cabride.ride_service.Enums;
 
-public class StopStatus {
+public enum StopStatus {
+    PENDING,
+    ARRIVED,
+    COMPLETED,
+    SKIPPED
 }
