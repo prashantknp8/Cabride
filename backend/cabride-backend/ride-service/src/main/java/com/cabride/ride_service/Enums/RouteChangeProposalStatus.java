@@ -1,4 +1,9 @@
 package com.cabride.ride_service.Enums;
 
-public class RouteChangeProposalStatus {
+public enum RouteChangeProposalStatus {
+    PENDING,
+    APPROVED,
+    REJECTED,
+    EXPIRED,
+    SUPERSEDED
 }

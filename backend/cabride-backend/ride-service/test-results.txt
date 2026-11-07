@@ -1,0 +1,233 @@
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------------< [0;36mcom.cabride:ride-service[0;1m >----------------------[m
+[[1;34mINFO[m] [1mBuilding ride-service 1.0.0[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.3.1:resources[m [1m(default-resources)[m @ [36mride-service[0;1m ---[m
+[[1;34mINFO[m] Copying 1 resource from src/main/resources to target/classes
+[[1;34mINFO[m] Copying 0 resource from src/main/resources to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.14.0:compile[m [1m(default-compile)[m @ [36mride-service[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1madded or removed source files[m.
+[[1;34mINFO[m] Compiling 80 source files with javac [debug parameters release 17] to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.3.1:testResources[m [1m(default-testResources)[m @ [36mride-service[0;1m ---[m
+[[1;34mINFO[m] skip non existing resourceDirectory /home/prashant-sharma/IntelliJ IDEA/CabRide/backend/cabride-backend/ride-service/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.14.0:testCompile[m [1m(default-testCompile)[m @ [36mride-service[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged dependency[m.
+[[1;34mINFO[m] Compiling 13 source files with javac [debug parameters release 17] to target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.5.4:test[m [1m(default-test)[m @ [36mride-service[0;1m ---[m
+[[1;34mINFO[m] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[[1;34mINFO[m] 
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m]  T E S T S
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m] Running com.cabride.ride_service.Service.Impl.[1mRouteChangeProposalServiceImplTest[m
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/home/prashant-sharma/.m2/repository/net/bytebuddy/byte-buddy-agent/1.17.7/byte-buddy-agent-1.17.7.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[[1;31mERROR[m] [1;31mTests [0;1mrun: [0;1m7[m, Failures: 0, [1;31mErrors: [0;1;31m7[m, Skipped: 0, Time elapsed: 1.742 s[1;31m <<< FAILURE![m -- in com.cabride.ride_service.Service.Impl.[1mRouteChangeProposalServiceImplTest[m
+[[1;31mERROR[m] com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.submitConsent_shouldExpireProposalWhenDeadlineHasPassed -- Time elapsed: 1.628 s <<< ERROR!
+org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+  2. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:69)
+  3. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:80)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+	at org.mockito.junit.jupiter.MockitoExtension.lambda$afterEach$2(MockitoExtension.java:200)
+	at java.base/java.util.Optional.ifPresent(Optional.java:178)
+	at org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:198)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+[[1;31mERROR[m] com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.submitConsent_shouldSupersedeProposalWhenRouteVersionChanged -- Time elapsed: 0.014 s <<< ERROR!
+org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+  2. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:80)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+	at org.mockito.junit.jupiter.MockitoExtension.lambda$afterEach$2(MockitoExtension.java:200)
+	at java.base/java.util.Optional.ifPresent(Optional.java:178)
+	at org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:198)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+[[1;31mERROR[m] com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.submitConsent_shouldRejectDuplicateResponse -- Time elapsed: 0.017 s <<< ERROR!
+org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:59)
+  2. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:62)
+  3. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+	at org.mockito.junit.jupiter.MockitoExtension.lambda$afterEach$2(MockitoExtension.java:200)
+	at java.base/java.util.Optional.ifPresent(Optional.java:178)
+	at org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:198)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+[[1;31mERROR[m] com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.submitConsent_shouldThrowWhenProposalDoesNotExist -- Time elapsed: 0.010 s <<< ERROR!
+org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:59)
+  2. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:60)
+  3. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:61)
+  4. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:62)
+  5. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:63)
+  6. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:65)
+  7. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+  8. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:69)
+  9. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:74)
+  10. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:77)
+  11. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:80)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+	at org.mockito.junit.jupiter.MockitoExtension.lambda$afterEach$2(MockitoExtension.java:200)
+	at java.base/java.util.Optional.ifPresent(Optional.java:178)
+	at org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:198)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+[[1;31mERROR[m] com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.submitConsent_shouldRecordApprovalAndWaitForOtherPassengers -- Time elapsed: 0.012 s <<< ERROR!
+org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+	at org.mockito.junit.jupiter.MockitoExtension.lambda$afterEach$2(MockitoExtension.java:200)
+	at java.base/java.util.Optional.ifPresent(Optional.java:178)
+	at org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:198)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+[[1;31mERROR[m] com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.submitConsent_shouldRejectProposalWhenPassengerRejects -- Time elapsed: 0.010 s <<< ERROR!
+org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+	at org.mockito.junit.jupiter.MockitoExtension.lambda$afterEach$2(MockitoExtension.java:200)
+	at java.base/java.util.Optional.ifPresent(Optional.java:178)
+	at org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:198)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+[[1;31mERROR[m] com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.submitConsent_shouldRejectPassengerWhoIsNotRequiredToRespond -- Time elapsed: 0.008 s <<< ERROR!
+org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:59)
+  2. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:62)
+  3. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+	at org.mockito.junit.jupiter.MockitoExtension.lambda$afterEach$2(MockitoExtension.java:200)
+	at java.base/java.util.Optional.ifPresent(Optional.java:178)
+	at org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:198)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+[[1;34mINFO[m] 
+[[1;34mINFO[m] Results:
+[[1;34mINFO[m] 
+[[1;31mERROR[m] [1;31mErrors: [m
+[[1;31mERROR[m] [1;31m  RouteChangeProposalServiceImplTest.submitConsent_shouldExpireProposalWhenDeadlineHasPassed » UnnecessaryStubbing 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+  2. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:69)
+  3. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:80)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.[m
+[[1;31mERROR[m] [1;31m  RouteChangeProposalServiceImplTest.submitConsent_shouldRecordApprovalAndWaitForOtherPassengers » UnnecessaryStubbing 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.[m
+[[1;31mERROR[m] [1;31m  RouteChangeProposalServiceImplTest.submitConsent_shouldRejectDuplicateResponse » UnnecessaryStubbing 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:59)
+  2. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:62)
+  3. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.[m
+[[1;31mERROR[m] [1;31m  RouteChangeProposalServiceImplTest.submitConsent_shouldRejectPassengerWhoIsNotRequiredToRespond » UnnecessaryStubbing 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:59)
+  2. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:62)
+  3. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.[m
+[[1;31mERROR[m] [1;31m  RouteChangeProposalServiceImplTest.submitConsent_shouldRejectProposalWhenPassengerRejects » UnnecessaryStubbing 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.[m
+[[1;31mERROR[m] [1;31m  RouteChangeProposalServiceImplTest.submitConsent_shouldSupersedeProposalWhenRouteVersionChanged » UnnecessaryStubbing 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+  2. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:80)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.[m
+[[1;31mERROR[m] [1;31m  RouteChangeProposalServiceImplTest.submitConsent_shouldThrowWhenProposalDoesNotExist » UnnecessaryStubbing 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:59)
+  2. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:60)
+  3. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:61)
+  4. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:62)
+  5. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:63)
+  6. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:65)
+  7. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:68)
+  8. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:69)
+  9. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:74)
+  10. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:77)
+  11. -> at com.cabride.ride_service.Service.Impl.RouteChangeProposalServiceImplTest.setUp(RouteChangeProposalServiceImplTest.java:80)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.[m
+[[1;34mINFO[m] 
+[[1;31mERROR[m] [1;31mTests run: 7, Failures: 0, Errors: 7, Skipped: 0[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  8.100 s
+[[1;34mINFO[m] Finished at: 2026-11-05T17:47:08+05:30
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal [32morg.apache.maven.plugins:maven-surefire-plugin:3.5.4:test[m [1m(default-test)[m on project [36mride-service[m: [1;31m[m
+[[1;31mERROR[m] [1;31m[m
+[[1;31mERROR[m] [1;31mSee /home/prashant-sharma/IntelliJ IDEA/CabRide/backend/cabride-backend/ride-service/target/surefire-reports for the individual test results.[m
+[[1;31mERROR[m] [1;31mSee dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.[m
+[[1;31mERROR[m] -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

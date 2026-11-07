@@ -64,12 +64,23 @@ public class Ride {
 
     private LocalDateTime updatedAt;
 
+    /**
+     * Increments whenever a new route becomes active.
+     * Consent proposals use this value to detect stale routes.
+     */
+    @Builder.Default
+    @Column(name = "route_version", nullable = false)
+    private Long routeVersion = 0L;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
 
         if (status == null) {
             status = RideStatus.REQUESTED;
+        }
+        if (routeVersion == null) {
+            routeVersion = 0L;
         }
     }
 

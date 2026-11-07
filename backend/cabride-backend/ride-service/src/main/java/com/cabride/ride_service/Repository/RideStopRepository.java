@@ -21,6 +21,7 @@ public interface RideStopRepository extends JpaRepository<RideStop, UUID> {
             StopType stopType
     );
 
+    List<RideStop> findByRideId(UUID rideId);
     List<RideStop> findByRideIdAndStatusOrderBySequenceAsc(
             UUID rideId,
             StopStatus status
