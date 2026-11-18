@@ -30,6 +30,7 @@ public class RouteChangeProposalServiceImpl
     private final RideRepository rideRepository;
     private final RideStopRepository rideStopRepository;
     private final RideBookingRepository rideBookingRepository;
+    private final RideRequestRepository rideRequestRepository;
 
     private final RouteChangeProposalRepository proposalRepository;
     private final RouteChangeProposalStopRepository proposalStopRepository;
@@ -218,6 +219,11 @@ public class RouteChangeProposalServiceImpl
             proposal.setStatus(RouteChangeProposalStatus.EXPIRED);
             proposalRepository.save(proposal);
 
+            releasePendingBooking(
+                    proposal,
+                    RideRequestStatus.EXPIRED
+            );
+
             return toResponse(
                     proposal,
                     "Consent deadline has expired."
@@ -231,6 +237,11 @@ public class RouteChangeProposalServiceImpl
         if (currentRouteVersion != proposal.getBaseRouteVersion()) {
             proposal.setStatus(RouteChangeProposalStatus.SUPERSEDED);
             proposalRepository.save(proposal);
+
+            releasePendingBooking(
+                    proposal,
+                    RideRequestStatus.REJECTED
+            );
 
             return toResponse(
                     proposal,
@@ -270,6 +281,11 @@ public class RouteChangeProposalServiceImpl
         if (!approved) {
             proposal.setStatus(RouteChangeProposalStatus.REJECTED);
             proposalRepository.save(proposal);
+
+            releasePendingBooking(
+                    proposal,
+                    RideRequestStatus.REJECTED
+            );
 
             return toResponse(
                     proposal,
@@ -415,6 +431,10 @@ public class RouteChangeProposalServiceImpl
                 || !proposal.getExpiresAt().isAfter(LocalDateTime.now())) {
             proposal.setStatus(RouteChangeProposalStatus.EXPIRED);
             proposalRepository.save(proposal);
+            releasePendingBooking(
+                    proposal,
+                    RideRequestStatus.EXPIRED
+            );
             return false;
         }
 
@@ -426,6 +446,10 @@ public class RouteChangeProposalServiceImpl
         if (!Objects.equals(activeVersion, proposal.getBaseRouteVersion())) {
             proposal.setStatus(RouteChangeProposalStatus.SUPERSEDED);
             proposalRepository.save(proposal);
+            releasePendingBooking(
+                    proposal,
+                    RideRequestStatus.REJECTED
+            );
             return false;
         }
 
@@ -574,6 +598,42 @@ public class RouteChangeProposalServiceImpl
         proposal.setStatus(RouteChangeProposalStatus.APPROVED);
         proposalRepository.save(proposal);
 
+        // Only newly created shared bookings need confirmation here.
+// Existing confirmed bookings must remain unchanged.
+        RideBooking requestingBooking = rideBookingRepository
+                .findById(proposal.getRequestingBookingId())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Requesting booking not found"
+                ));
+
+        if (requestingBooking.getStatus() == BookingStatus.PENDING_APPROVAL) {
+
+            RideRequest rideRequest = rideRequestRepository
+                    .findById(requestingBooking.getRideRequestId())
+                    .orElseThrow(() -> new EntityNotFoundException(
+                            "Ride request not found"
+                    ));
+
+            if (rideRequest.getStatus() != RideRequestStatus.REQUESTED
+                    || !rideRequest.getPassengerId().equals(
+                    requestingBooking.getPassengerId())) {
+                throw new IllegalStateException(
+                        "Ride request is no longer eligible for confirmation"
+                );
+            }
+
+            requestingBooking.setStatus(BookingStatus.CONFIRMED);
+            rideBookingRepository.save(requestingBooking);
+
+            rideRequest.setStatus(RideRequestStatus.MATCHED);
+            rideRequestRepository.save(rideRequest);
+        } else if (requestingBooking.getStatus() != BookingStatus.CONFIRMED) {
+            throw new IllegalStateException(
+                    "Requesting booking cannot be activated"
+            );
+        }
+
+
         return true;
     }
 
@@ -623,9 +683,65 @@ public class RouteChangeProposalServiceImpl
 
         // These proposals are no longer valid because a newer proposal exists.
         for (RouteChangeProposal proposal : pendingProposals) {
-            proposal.setStatus(RouteChangeProposalStatus.SUPERSEDED);
+            boolean expired = proposal.getExpiresAt() == null
+                    || !proposal.getExpiresAt().isAfter(LocalDateTime.now());
+
+            proposal.setStatus(
+                    expired
+                            ? RouteChangeProposalStatus.EXPIRED
+                            : RouteChangeProposalStatus.SUPERSEDED
+            );
+
+            releasePendingBooking(
+                    proposal,
+                    expired
+                            ? RideRequestStatus.EXPIRED
+                            : RideRequestStatus.REJECTED
+            );
         }
 
         proposalRepository.saveAll(pendingProposals);
+    }
+    /**
+     * Releases a reserved seat when a pending route proposal cannot proceed.
+     * Only pending bookings release seats, making this operation safe to repeat.
+     */
+    private void releasePendingBooking(
+            RouteChangeProposal proposal,
+            RideRequestStatus requestStatus
+    ) {
+        RideBooking booking = rideBookingRepository
+                .findById(proposal.getRequestingBookingId())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Requesting booking not found"
+                ));
+
+        // Confirmed bookings have already consumed their reserved seat.
+        if (booking.getStatus() != BookingStatus.PENDING_APPROVAL) {
+            return;
+        }
+
+        Ride ride = rideRepository.findById(proposal.getRideId())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Ride not found"
+                ));
+
+        // Restore the seat previously reserved by this booking.
+        ride.setAvailableSeats(ride.getAvailableSeats() + 1);
+        rideRepository.save(ride);
+
+        booking.setStatus(BookingStatus.REJECTED);
+        rideBookingRepository.save(booking);
+
+        RideRequest request = rideRequestRepository
+                .findById(booking.getRideRequestId())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Ride request not found"
+                ));
+
+        if (request.getStatus() == RideRequestStatus.REQUESTED) {
+            request.setStatus(requestStatus);
+            rideRequestRepository.save(request);
+        }
     }
 }

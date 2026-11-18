@@ -2,8 +2,10 @@ package com.cabride.ride_service.Service.Impl;
 
 import com.cabride.ride_service.Client.DriverClient;
 import com.cabride.ride_service.Dto.Request.CreateRideRequest;
+import com.cabride.ride_service.Dto.Request.CreateRouteChangeRequest;
 import com.cabride.ride_service.Dto.Response.DriverResponse;
 import com.cabride.ride_service.Dto.Response.RideRequestResponse;
+import com.cabride.ride_service.Dto.Response.RouteChangeProposalResponse;
 import com.cabride.ride_service.Entity.Ride;
 import com.cabride.ride_service.Entity.RideBooking;
 import com.cabride.ride_service.Entity.RideRequest;
@@ -16,6 +18,7 @@ import com.cabride.ride_service.Repository.RideBookingRepository;
 import com.cabride.ride_service.Repository.RideRepository;
 import com.cabride.ride_service.Repository.RideRequestRepository;
 import com.cabride.ride_service.Service.RideRequestService;
+import com.cabride.ride_service.Service.RouteChangeProposalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +32,7 @@ import java.util.UUID;
 public class RideRequestServiceImpl implements RideRequestService {
 
     private final RideRequestRepository rideRequestRepository;
+    private final RouteChangeProposalService routeChangeProposalService;
     private final DriverClient driverClient;
     private final RideRepository rideRepository;
     private final RideBookingRepository rideBookingRepository;
@@ -171,6 +175,84 @@ public class RideRequestServiceImpl implements RideRequestService {
         rideRequestRepository.save(request);
 
         return mapToResponse(request);
+    }
+    @Override
+    @Transactional
+    public RouteChangeProposalResponse bookSharedRide(
+            UUID requestId,
+            UUID rideId,
+            UUID passengerId
+    ) {
+        // Lock the ride first so concurrent passengers cannot reserve the same seat.
+        Ride ride = rideRepository.findByIdForUpdate(rideId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Shared ride not found"
+                ));
+
+        // Lock the passenger request to prevent duplicate booking attempts.
+        RideRequest request = rideRequestRepository
+                .findByIdAndPassengerIdAndStatus(
+                        requestId,
+                        passengerId,
+                        RideRequestStatus.REQUESTED
+                )
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Ride request not found or already processed"
+                ));
+
+        if (rideBookingRepository.existsByRideRequestId(requestId)) {
+            throw new IllegalStateException(
+                    "This ride request already has a booking"
+            );
+        }
+
+        if (ride.getRideType() != RideType.SHARED
+                || ride.getStatus() != RideStatus.ACCEPTED) {
+            throw new IllegalStateException(
+                    "Selected ride is not an available shared ride"
+            );
+        }
+
+        if (ride.getAvailableSeats() == null
+                || ride.getAvailableSeats() <= 0) {
+            throw new IllegalStateException(
+                    "No seats available in this ride"
+            );
+        }
+
+        // Reserve the seat immediately, including while consent is pending.
+        ride.setAvailableSeats(ride.getAvailableSeats() - 1);
+        rideRepository.save(ride);
+
+        RideBooking booking = RideBooking.builder()
+                .rideId(ride.getId())
+                .rideRequestId(request.getId())
+                .passengerId(passengerId)
+                .pickupLat(request.getPickupLat())
+                .pickupLon(request.getPickupLon())
+                .dropLat(request.getDestinationLat())
+                .dropLon(request.getDestinationLon())
+                .status(BookingStatus.PENDING_APPROVAL)
+                .build();
+
+        RideBooking savedBooking = rideBookingRepository.save(booking);
+
+        CreateRouteChangeRequest proposalRequest =
+                new CreateRouteChangeRequest();
+
+        proposalRequest.setRideId(ride.getId());
+        proposalRequest.setBookingId(savedBooking.getId());
+        proposalRequest.setPickupLatitude(request.getPickupLat());
+        proposalRequest.setPickupLongitude(request.getPickupLon());
+        proposalRequest.setDropLatitude(request.getDestinationLat());
+        proposalRequest.setDropLongitude(request.getDestinationLon());
+
+        // If proposal creation fails, the transaction rolls back the seat
+        // reservation and booking together.
+        return routeChangeProposalService.createProposal(
+                proposalRequest,
+                passengerId
+        );
     }
 
     @Override

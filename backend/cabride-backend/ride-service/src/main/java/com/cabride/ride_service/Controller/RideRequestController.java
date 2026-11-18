@@ -3,6 +3,7 @@ package com.cabride.ride_service.Controller;
 
 import com.cabride.ride_service.Dto.Request.CreateRideRequest;
 import com.cabride.ride_service.Dto.Response.RideRequestResponse;
+import com.cabride.ride_service.Dto.Response.RouteChangeProposalResponse;
 import com.cabride.ride_service.Service.RideRequestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -98,5 +99,22 @@ public class RideRequestController {
         }
 
         return ResponseEntity.ok(response);
+    }// Passenger requests to join an existing shared ride.
+    @PostMapping("/{requestId}/shared-booking")
+    public ResponseEntity<RouteChangeProposalResponse> bookSharedRide(
+            @PathVariable UUID requestId,
+            @RequestParam UUID rideId,
+            Authentication authentication
+    ) {
+        UUID passengerId = UUID.fromString(authentication.getName());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                rideRequestService.bookSharedRide(
+                        requestId,
+                        rideId,
+                        passengerId
+                )
+        );
     }
+
 }

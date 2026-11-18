@@ -2,6 +2,7 @@ package com.cabride.ride_service.Service;
 
 import com.cabride.ride_service.Dto.Request.CreateRideRequest;
 import com.cabride.ride_service.Dto.Response.RideRequestResponse;
+import com.cabride.ride_service.Dto.Response.RouteChangeProposalResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +24,11 @@ public interface RideRequestService {
             UUID requestId,
             UUID passengerId,
             String token
+    );
+    RouteChangeProposalResponse bookSharedRide(
+            UUID requestId,
+            UUID rideId,
+            UUID passengerId
     );
     List<RideRequestResponse> getMyRequests(UUID passengerId);
 }
